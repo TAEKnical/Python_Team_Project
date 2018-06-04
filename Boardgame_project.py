@@ -32,9 +32,24 @@ def hit(deck):
     return  (deck[0],deck[1:])
 
 def show_cards(cards):
+	print("당신의 패는")
 	for card in cards:
-		print(card) # 패 표현방법 바꿔야됨
-
+		if card == 1:
+			print("1월 광")
+		elif card == 2:
+			print("2월 고도리")
+		elif card == 3:
+			print("3월 광")		
+		elif card == 4:
+			print("4월 고도리")
+		elif card == 8:
+			print("8월 광")
+		elif card == 7:
+			print("7월 돼지")
+		elif card == -8:
+			print("8월 고도리")
+		else:
+			print(abs(card),"월 끗")
 def more(message):
     answer = input(message)
     while not (answer == 'y' or answer == 'n'):
@@ -112,42 +127,42 @@ def jokbo(cards,rank): #    !!!!!!!!!남호형파트 .수정필요!
 		rank += 13
 	elif -4 in cards and (7 in cards or -7 in cards):
 		rank += 13
-
+	return rank
 def jokbomoya(cards,rank):
 	if rank == -1:
-		print('망통')
+		print('당신이 가진 패의 족보는 : 망통')
 	elif rank == 1:
-		print('갑오')
+		print('당신이 가진 패의 족보는 : 갑오')
 	elif rank == 2:
-		print('세륙')
+		print('당신이 가진 패의 족보는 : 세륙')
 	elif rank == 3:
-		print('장사')
+		print('당신이 가진 패의 족보는 : 장사')
 	elif rank == 4:
-		print('장삥')
+		print('당신이 가진 패의 족보는 : 장삥')
 	elif rank == 5:
-		print('구삥')
+		print('당신이 가진 패의 족보는 : 구삥')
 	elif rank == 6:
-		print('독사')
+		print('당신이 가진 패의 족보는 : 독사')
 	elif rank == 7:
-		print('알리')
+		print('당신이 가진 패의 족보는 : 알리')
 	elif rank == 8:
-		print(abs(cards[0]),'땡')
+		print('당신이 가진 패의 족보는 : ',abs(cards[0]),'땡')
 
 	elif rank == 9:
-		print('광땡')
+		print('당신이 가진 패의 족보는 : 광땡')
 	elif rank == 0:
 		count = abs(cards[0])+abs(cards[1])
 		if count >= 10:
 			count -= 10
-			print(count,'끗')
+			print('당신이 가진 패의 족보는 : ',count,'끗')
 		else:
-			print(count,'끗')
+			print('당신이 가진 패의 족보는 : ',count,'끗')
 	elif rank == 11: #떙잡이
-		print('땡잡이')
+		print('당신이 가진 패의 족보는 : 땡잡이')
 	elif rank == 12:
-		print('사구')
+		print('당신이 가진 패의 족보는 : 사구')
 	elif rank == 13:
-		print('암행어사')
+		print('당신이 가진 패의 족보는 : 암행어사')
 
 def player_menu():
 	try:
@@ -165,18 +180,16 @@ def player_menu():
 	except KeyboardInterrupt:
 		print("종료합니다.")
 def player_betting(player_money,standard_pandon):
-	player_betting_money=input("얼마를 베팅하시겠습니까? : ")
-	if(int(player_betting_money) > player_money):
-		print("가진 돈보다 많이 입력할 수 없습니다.")
-		player_betting(player_money,standard_pandon)
-	elif(int(player_betting_money) < 0):
-		print("음수는 입력할 수 없습니다.")
-		player_betting(player_money,standard_pandon)
-	elif(int(player_betting_money) < standard_pandon):
-		print("판돈보다 적게 입력할 수 없습니다.")
-		player_betting(player_money,standard_pandon)
-	else:
-		return player_betting_money
+	while True:
+		player_betting_money=input("얼마를 베팅하시겠습니까? : ")
+		if(int(player_betting_money) > player_money):
+			print("가진 돈보다 많이 입력할 수 없습니다.")
+		elif(int(player_betting_money) < 0):
+			print("음수는 입력할 수 없습니다.")
+		elif(int(player_betting_money) < standard_pandon):
+			print("판돈보다 적게 입력할 수 없습니다.")
+		else:
+			return player_betting_money
 
 def computer_betting(computer_money,standard_pandon,computer_rank):
 	if computer_rank == -1:
@@ -195,24 +208,25 @@ def sutda(User,AI1,AI2):
 	computer1_money = int(AI1['Start_money'])
 	computer2_money = int(AI2['Start_money'])
 	try:
-		while(True):
-			if player_money==0: #플레이어1 파산
-				print("당신은 파산했습니다.")
-				break
-				#losecount+=1
-				#try+=1
-			if computer1_moeny==0:#컴퓨터1 파산
-				pass
-			if computer2_money==0:#컴퓨터2 파산
-				pass
-			if computer1_money==0 and computer2_money==0: #컴퓨터 둘다 파산
-				print("승리하였습니다!")
-				print("플레이어 자산 : ", player_money)
-				#wincount+=1
-				#try+=1
-				break
-
-			print("섯다 라운드 시작")
+		while True:
+			# if player_money==0: #플레이어1 파산
+			# 	print("당신은 파산했습니다.")
+			# 	break
+			# 	#losecount+=1
+			# 	#try+=1
+			# if computer1_moeny==0:#컴퓨터1 파산
+			# 	pass
+			# if computer2_money==0:#컴퓨터2 파산
+			# 	pass
+			# if computer1_money==0 and computer2_money==0: #컴퓨터 둘다 파산
+			# 	print("승리하였습니다!")
+			# 	print("플레이어 자산 : ", player_money)
+			# 	#wincount+=1
+			# 	#try+=1
+			# 	break
+			print("=========================")
+			print("      섯다 라운드 시작")
+			print("=========================")
 			deck = fresh_deck()
 			computer1 = []
 			computer2 = []
@@ -240,7 +254,13 @@ def sutda(User,AI1,AI2):
 			computer2_money -= standard_pandon
 			betting_money=3*standard_pandon
 			print("총 판돈은",betting_money,"입니다.")
+			print("-------------------------------------")
 
+
+			print("플레이어 보유금액 : ",player_money)
+			print("com1 보유금액 :", computer1_money)
+			print("com2 보유금액 :", computer2_money)
+			print("-------------------------------------")#게임 참가자 보유금액 출력
 
 			card, deck = hit(deck)		#패돌리기
 			player.append(card)
@@ -255,27 +275,11 @@ def sutda(User,AI1,AI2):
 			card, deck = hit(deck)
 			computer2.append(card)
 
+			show_cards(player)
+			player,player_rank = jokbo(player,player_rank)	#플레이어,컴퓨터 랭크 부여
 
-			print("내 패는:")		#플레이어 패 보여주기
-			count = 1
-			for i in player:
-				print(count,'번쨰 패 : ')
-				if i == 1:
-					print('1광입니다')
-				elif i == 3:
-					print('3광입니다')
-				elif i == 8:
-					print('8광입니다')
-				else:
-					print(abs(i),'월 끗입니다')
-			count += 1
+			jokbomoya(player,player_rank)#족보출력
 
-
-			player,player_rank = jokbo(player,player_rank)	#플레이어,컴퓨터 랭크 부여 및 보유금액 출력
-			print("플레이어 보유금액 : ",player_money)
-			print("com1 보유금액 :", computer1_money)
-			print("com2 보유금액 :", computer2_money)
-			jokbomoya(player,player_rank)
 			computer1,computer1_rank = jokbo(computer1,computer1_rank)
 			computer1_check_percentage = (computer1_rank*5) + 50 #족보에 따라 computer가 체크를 외칠 확률부여
 			if computer1_rank == -1: #망통이면 체크를 절대 외치지 않도록
@@ -292,116 +296,118 @@ def sutda(User,AI1,AI2):
 			computer1_lowest = computer1_rank*2000000 #컴퓨터가 자신의 족보에 따라 베팅하는 하한선
 			computer2_lowest = computer2_rank*2000000
 			
-
-			select=player_menu() 	#라운드 진행시 플레이어 메뉴 출력
-			if select == '1': #플레이어 베팅
-				player_betting_money = int(player_betting(player_money,standard_pandon))
-				player_money-=player_betting_money
-				betting_money+=player_betting_money
-				pre_person_stack=player_betting_money
-				print("당신은",player_betting_money,"원을 베팅했습니다.")
-				if computer1_check:#플레이어가 베팅하고, 컴퓨터1이 die하지 않을 경우(체크/베팅)
-					computer1_die=False 
-					if betting_money < computer1_lowest: #컴퓨터1 베팅
-						computer1_betting_money = int(computer_betting(computer1_money,standard_pandon,computer_rank))
-						betting_money+=computer1_betting_money
-						computer1_money-=computer1_betting_money
-						print("com1은",computer1_betting_money,"원을 베팅했습니다.")
-						computer1_end=False
-					else: #컴퓨터1 체크선언
-						computer1_betting_money=pre_person_stack
-						computer1_check=True
-						betting_money+=computer1_betting_money
-						computer1_money-=computer1_betting_money
-						print("com1은",computer1_betting_money,"원을 베팅하고 체크를 선언했습니다.")
+			while player_check==False or computer1_check==False or computer2_check==False:
+				select=player_menu() 	#라운드 진행시 플레이어 메뉴 출력
+				if select == '1': #플레이어 베팅
+					player_betting_money = int(player_betting(player_money,standard_pandon))
+					player_money-=player_betting_money
+					betting_money+=player_betting_money
+					pre_person_stack=player_betting_money
+					print("당신은",player_betting_money,"원을 베팅했습니다.")
+					if computer1_check:#플레이어가 베팅하고, 컴퓨터1이 die하지 않을 경우(체크/베팅)
+						computer1_die=False 
+						if betting_money < computer1_lowest: #컴퓨터1 베팅
+							computer1_betting_money = int(computer_betting(computer1_money,standard_pandon,computer_rank))
+							betting_money+=computer1_betting_money
+							computer1_money-=computer1_betting_money
+							print("com1은",computer1_betting_money,"원을 베팅했습니다.")
+							computer1_end=False
+						else: #컴퓨터1 체크선언
+							computer1_betting_money=pre_person_stack
+							computer1_check=True
+							betting_money+=computer1_betting_money
+							computer1_money-=computer1_betting_money
+							print("com1은",computer1_betting_money,"원을 베팅하고 체크를 선언했습니다.")
+							computer1_end=True
+					else: #컴퓨터1 다이
+						print("com1은 다이를 선언했습니다.")
 						computer1_end=True
-				else: #컴퓨터1 다이
-					print("com1은 다이를 선언했습니다.")
-					computer1_end=True
-					computer1_die=True
-				if computer2_check: #플레이어가 베팅하고, 컴퓨터1이 선택하고, 컴퓨터2가 die하지 않을 경우(체크/베팅)
-					computer2_die=False
-					if betting_money < computer2_lowest: #플레이어가 베팅하고, 컴퓨터1이 선태갛고, 컴퓨터2가 베팅
-						computer2_betting_money = int(computer_betting(computer2_money,standard_pandon,computer_rank))
-						betting_money+=computer2_betting_money
-						computer2_money-=computer2_betting_money
-						print("com2는",computer2_betting_money,"원을 베팅했습니다.")
-						computer2_end=False
-					else:#컴퓨터2가 체크선언 
-						computer2_betting_money=pre_person_stack
-						computer2_check=True
-						betting_money+=computer2_betting_money
-						computer2_money-=computer2_betting_money
-						print("com2는",computer2_betting_money,"원을 베팅하고 체크를 선언했습니다.")
+						computer1_die=True
+						computer1_check=True
+					if computer2_check: #플레이어가 베팅하고, 컴퓨터1이 선택하고, 컴퓨터2가 die하지 않을 경우(체크/베팅)
+						computer2_die=False
+						if betting_money < computer2_lowest: #플레이어가 베팅하고, 컴퓨터1이 선태갛고, 컴퓨터2가 베팅
+							computer2_betting_money = int(computer_betting(computer2_money,standard_pandon,computer_rank))
+							betting_money+=computer2_betting_money
+							computer2_money-=computer2_betting_money
+							print("com2는",computer2_betting_money,"원을 베팅했습니다.")
+							computer2_end=False
+						else:#컴퓨터2가 체크선언 
+							computer2_betting_money=pre_person_stack
+							computer2_check=True
+							betting_money+=computer2_betting_money
+							computer2_money-=computer2_betting_money
+							print("com2는",computer2_betting_money,"원을 베팅하고 체크를 선언했습니다.")
+							computer2_end=True
+					else:#컴퓨터2 다이선언
+						print("com2는 다이를 선언했습니다.")
 						computer2_end=True
-				else:#컴퓨터2 다이선언
-					print("com2는 다이를 선언했습니다.")
-					computer2_end-True
-					computer2_die=True
+						computer2_die=True
+						computer2_check=True
 
-				if(computer1_die==True and computer2_die==True): #컴1, 컴2가 다이했을 경우만 미리 출력
-					print("플레이어가 승리했습니다.")
-					player_money +=betting_money
-					computer1_money -=computer1_betting_money
-					computer2_money -=computer2_betting_money
-					print("플레이어 보유금액 : ",player_money)
-					print("com1 보유금액 :", computer1_money)
-					print("com2 보유금액 :", computer2_money)
-					continue
+					if(computer1_die==True and computer2_die==True): #컴1, 컴2가 다이했을 경우만 미리 출력
+						print("플레이어가 승리했습니다.")
+						player_money +=betting_money
+						computer1_money -=computer1_betting_money
+						computer2_money -=computer2_betting_money
+						print("플레이어 보유금액 : ",player_money)
+						print("com1 보유금액 :", computer1_money)
+						print("com2 보유금액 :", computer2_money)
+						break
 
 
 
+				elif select =='2': #플레이어메뉴->체크 선택으로 플레이어가 체크인 경우(3명 모두 체크를 원하면 패 오픈)
+					print("당신은 체크를 선언했습니다.")
+					print(computer1_check,computer2_check)
+					player_check=True
+					player_end = True
+					if(computer1_end==True and computer2_end==True and player_end==True):
+						if(computer1_die==True and computer2_die==False): #컴퓨터1이 다이, 플레이어와 컴퓨터2가 체크한경우
+							print("패를 오픈합니다.")
+							print("com1은 이미 다이를 선언했습니다.")
+							computer1_rank = -2 #다이한 참가자의 랭크는 -2로 지정하여 winandlose함수에서 패자취급하도록
+							WinandLose(player_rank,computer1_rank,computer2_rank,player,computer1,computer2)
+						elif(computer1_die==False and computer2_die==True): #컴퓨터1이 베팅, 플레이어와 컴퓨터2가 체크한경우
+							print("패를 오픈합니다.")
+							print("com2는 이미 다이를 선언했습니다.")
+							computer2_rank=-2	#다이한 참가자의 랭크는 -2로 지정하여 winandlose함수에서 패자취급하도록
+							WinandLose(player_rank,computer1_rank,computer2_rank,player,computer1,computer2)
+						elif(computer1_die==False and computer2_die==False): #컴퓨터1, 컴퓨터2 모두 다이하지 않고 세명모두 체크한경우
+							print("패를 오픈합니다.")
+							print("아무도 다이를 선언하지 않았습니다.")
+							WinandLose(player_rank,computer1_rank,computer2_rank,player,computer1,computer2)
 
-			elif select =='2': #플레이어메뉴->체크 선택으로 플레이어가 체크인 경우(3명 모두 체크를 원하면 패 오픈)
-				print("당신은 체크를 선언했습니다.")
-				player_check=True
-				player_end = True
-				if(computer1_end==True and computer2_end==True and player_end==True):
-					if(computer1_die==True and computer2_die==False): #컴퓨터1이 다이, 플레이어와 컴퓨터2가 체크한경우
-						print("패를 오픈합니다.")
-						print("com1은 이미 다이를 선언했습니다.")
-						computer1_rank = -2 #다이한 참가자의 랭크는 -2로 지정하여 winandlose함수에서 패자취급하도록
-						WinandLose(player_rank,computer1_rank,computer2_rank)
-					elif(computer1_die==False and computer2_die==True): #컴퓨터1이 베팅, 플레이어와 컴퓨터2가 체크한경우
-						print("패를 오픈합니다.")
-						print("com2는 이미 다이를 선언했습니다.")
-						computer2_rank=-2	#다이한 참가자의 랭크는 -2로 지정하여 winandlose함수에서 패자취급하도록
-						WinandLose(player_rank,computer1_rank,computer2_rank)
-					elif(computer1_die==False and computer2_die==False): #컴퓨터1, 컴퓨터2 모두 다이하지 않고 세명모두 체크한경우
-						print("패를 오픈합니다.")
-						print("아무도 다이를 선언하지 않았습니다.")
-						WinandLose(player_rank,computer1_rank,computer2_rank)
 
 
+				elif select =='3': #플레이어메뉴->다이 선택으로 플레이어가 다이를 선언한 경우
+					player_die = True
+					player_end = True
+					if computer1_die==True and computer2_die==True: #세명 모두 다이를 선언한 경우->리매치
+						print("세 명 모두 다이를 선언했으므로 다시 진행합니다.")
+						continue
+					elif computer1_die==True and computer2_die==False:#2명 다이로 컴퓨터2의 승리
+						player_rank=-2
+						computer1_rank=-2
+						WinandLose(player_rank,computer1_rank,computer2_rank,player,computer1,computer2)
+					elif computer1_die==False and computer2_die==True:#2명 다이로 컴퓨터1 승리
+						player_rank=-2
+						computer2_rank=-2
+						WinandLose(player_rank,computer1_rank,computer2_rank,player,computer1,computer2)
 
-			elif select =='3': #플레이어메뉴->다이 선택으로 플레이어가 다이를 선언한 경우
-				player_die = True
-				player_end = True
-				if computer1_die==True and computer2_die==True: #세명 모두 다이를 선언한 경우->리매치
-					print("세 명 모두 다이를 선언했으므로 다시 진행합니다.")
-					continue
-				elif computer1_die==True and computer2_die==False:#2명 다이로 컴퓨터2의 승리
-					player_rank=-2
-					computer1_rank=-2
-					WinandLose(player_rank,computer1_rank,computer2_rank)
-				elif computer1_die==False and computer2_die==True:#2명 다이로 컴퓨터1 승리
-					player_rank=-2
-					computer2_rank=-2
-					WinandLose(player_rank,computer1_rank,computer2_rank)
-
-			elif select =='4':  #스킬1사용   !!!!정환이파트
-				skill_1()
-				# 베팅
-				pass
-			elif select =='5': #스킬2사용    !!!!정환이파트
-				skill_2()
-				# 베팅
-				pass
+				elif select =='4':  #스킬1사용   !!!!정환이파트
+					skill_1()
+					# 베팅
+					pass
+				elif select =='5': #스킬2사용    !!!!정환이파트
+					skill_2()
+					# 베팅
+					pass
 	except KeyboardInterrupt:
 		print("프로그램을 종료합니다.")
 
 
-def WinandLose(player_rank,computer1_rank,computer2_rank):
+def WinandLose(player_rank,computer1_rank,computer2_rank,player,computer1,computer2):
 
 	if player_rank == 11 and (computer1_rank == 8 or computer2_rank == 8):
 		print('computer1의 족보는 : ')
