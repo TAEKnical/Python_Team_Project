@@ -3,10 +3,10 @@ import sys
 Current_money = 0
 betting_stack = 0
 def show_top5(users):
-	print("-----")
+	print("------------------------------------------------")
 	i=0
 	sorted_users=sorted(users.items(),key=lambda x: x[1][1])# 칩의 개수 역순으로 정렬
-	print("All-time Top 5 based on the percentage of victories")
+	print("Top5! (응률기준)")
 	for name in sorted_users[:5]:
 		if(sorted_users[i][1][3]==0):
 			continue
@@ -41,6 +41,7 @@ def login(users):
 	except KeyboardInterrupt:
 		print("종료합니다.")
 def store(users):
+	print("결과를 저장합니다.")
 	file = open('users.txt','w')
 	names = users.keys()
 	for name in names:
@@ -66,12 +67,11 @@ def winner(who,wins):
 		computer1_money += Current_money
 	elif who == Com2:
 		computer2_money += Current_money
-	print("=========================")
-	print("현재 돈")
-	print("Player :",player_money)
-	print("Computer1 :",computer1_money)
-	print("Computer2 :",computer2_money)
-	print("=========================")
+	print("================================================")
+	print("                 현재 보유금액")
+	print(User['이름']+" :",player_money)
+	print("아 귀 :",computer1_money)
+	print("정마담 :",computer2_money)
 	return wins
 
 def make_percentage(percent): #0~100숫자입력-> 확률
@@ -89,13 +89,13 @@ def make_percentage(percent): #0~100숫자입력-> 확률
 		return False #스킬 실패
 
 def change_handcard(wins): #스킬1 밑장빼기
-	global player , deck, player_money
+	global player , deck, player_money,User
 	if make_percentage(User['Skill_Percentage']) == True:
 		print("타짜의 손기술이 성공하였습니다!")
 
-		change_card = input("어떤 패를 교체 하시겠습니까? 1. 첫번째 패 2. 두번째 패 :")
+		change_card = input("밑장빼기 후 덱에 돌려줄 패를 선택하세요.. 1.첫번째 패 2.두번째 패  :  ")
 		while not (change_card == '1' or change_card == '2'):
-			change_card = input("어떤 패를 교체 하시겠습니까? 1. 첫번째 패 2. 두번째 패 :", ' ')
+			change_card = input("밑장빼기 후 덱에 돌려줄 패를 선택하세요. 1. 첫번째 패 2. 두번째 패  :  ", ' ')
 		if change_card == '1':
 			card, deck = hit(deck)
 			player[0]=card
@@ -118,8 +118,8 @@ def change_handcard(wins): #스킬1 밑장빼기
 				elif i == 9:
 					print('3(열끗)', end = ' ')
 				else:
-					print(abs(i), end = ' ')
-		print('현재 당신의 족보는 : ' , You['what_jokbo'])
+					print(abs(i),"월", end = ' ')
+		print('현재 '+User['이름']+'의 족보는 : ' , You['what_jokbo'])
 		wins = player_turn(wins)
 	else:
 		print("으악!!손기술을 사용하다 발각되었습니다!!!!!!")
@@ -128,21 +128,21 @@ def change_handcard(wins): #스킬1 밑장빼기
 			player_money -= 100000000
 		else:
 			print("벌금을 낼 돈이 없어요ㅠㅠㅠ")
-			print("=======================")
-			print("G  A  M  E  O  V  E  R")
-			print("=======================")
+			print("================================================")
+			print("       G    A    M    E    O    V    E    R")
+			print("================================================")
 			sys.exit(1)
 
 def exchange(wins): #스킬 2 바꿔치기
-	global player_money
+	global player_money,User
 	if make_percentage(User['Skill_Percentage']) == True:
 		print("타짜의 손기술이 성공하였습니다!")
-		change_card = input("어떤 패를 교체 하시겠습니까? 1. 첫번째 패 2. 두번째 패 :")
+		change_card = input("어떤 패를 바꿔치기 하시겠습니까? 1.첫번째 패 2.두번째 패  :  ")
 		while not (change_card == '1' or change_card == '2'):
-			change_card = input("어떤 패를 교체 하시겠습니까? 1. 첫번째 패 2. 두번째 패 :")
-		who = input("누구와 패를 교환하시겠습니까? 1. Computer1 2. Computer2 :")
+			change_card = input("어떤 패를 교체 하시겠습니까? 1. 첫번째 패 2. 두번째 패 :  ")
+		who = input("누구와 패를 바꿔치기 하시겠습니까? 1.아귀 2.정마담 :")
 		while not (who == '1' or who == '2'):
-			who = input("누구와 패를 교환하시겠습니까? 1. Computer1 2. Computer2")
+			who = input("누구와 패를 바꿔치기 하시겠습니까? 1.아귀 2.정마담  :  ")
 		index = int(change_card) - 1
 		if who == '1':
 			computer1.append(player[index])
@@ -168,8 +168,8 @@ def exchange(wins): #스킬 2 바꿔치기
 					elif i == 9:
 						print('3(열끗)', end = ' ')
 					else:
-						print(abs(i), end = ' ')
-			print('현재 당신의 족보는 : ' , You['what_jokbo'])
+						print(abs(i),"월 끗", end = ' ')
+			print('현재 '+User['이름']+'의 족보는 : ' , You['what_jokbo'])
 			wins = player_turn(wins)
 		if who == '2':
 			computer2.append(player[index])
@@ -197,8 +197,8 @@ def exchange(wins): #스킬 2 바꿔치기
 					elif i == 9:
 						print('3(열끗)', end = ' ')
 					else:
-						print(abs(i), end = ' ')
-			print('현재 당신의 족보는 : ' , You['what_jokbo'])
+						print(abs(i),"월 끗", end = ' ')
+			print('현재 '+User['이름']+'의 족보는 : ' , You['what_jokbo'])
 			wins = player_turn(wins)			
 	else:
 		print("으악!!손기술을 사용하다 발각되었습니다!!!!!!")
@@ -207,9 +207,9 @@ def exchange(wins): #스킬 2 바꿔치기
 			player_money -= 100000000
 		else:
 			print("벌금을 낼 돈이 없어요ㅠㅠㅠ")
-			print("=======================")
-			print("G  A  M  E  O  V  E  R")
-			print("=======================")
+			print("================================================")
+			print("       G    A    M    E    O    V    E    R")
+			print("================================================")
 			sys.exit(1)
 
 
@@ -234,24 +234,24 @@ def fake(wins): #스킬 3 뻥카
 
 		else:
 			print("벌금을 낼 돈이 없어요ㅠㅠㅠ")
-			print("=======================")
-			print("G  A  M  E  O  V  E  R")
-			print("=======================")
+			print("================================================")
+			print("       G    A    M    E    O    V    E    R")
+			print("================================================")
 			sys.exit(1)
 
 
 def peek(wins): #스킬 4 훔쳐보기
 	global player_money
 	if make_percentage(User['Skill_Percentage']) == True:
-		print("타짜의 손기술이 성공하였습니다!")
-		who = input("누구의 패를 훔쳐보시겠습니까? 1. Computer1 2. Computer2")
+		print(User['이름']+"의 손기술이 성공하였습니다!")
+		who = input("누구의 패를 훔쳐보시겠습니까? 1.아귀 2.정마담  :  ")
 		while not (who == '1' or who == '2'):
-			who = input("누구의 패를 훔쳐보시겠습니까? 1. Computer1 2. Computer2")
+			who = input("누구의 패를 훔쳐보시겠습니까? 1.아귀 2.정마담  :  ")
 		if who == '1':
-			print(AI1['이름'] , "의 손에", abs(computer1[0]), "이(가) 있습니다")
+			print("아귀의 손에", abs(computer1[0]), "이(가) 있습니다")
 			wins = player_turn(wins)
 		if who == '2':
-			print(AI2['이름'] , "의 손에", abs(computer2[0]), "이(가) 있습니다")
+			print("정마담의 손에", abs(computer2[0]), "이(가) 있습니다")
 			wins = player_turn(wins)
 	else:
 		print("으악!!손기술을 사용하다 발각되었습니다!!!!!!")
@@ -260,9 +260,9 @@ def peek(wins): #스킬 4 훔쳐보기
 			player_money -= 100000000
 		else:
 			print("벌금을 낼 돈이 없어요ㅠㅠㅠ")
-			print("=======================")
-			print("G  A  M  E  O  V  E  R")
-			print("=======================")
+			print("================================================")
+			print("       G    A    M    E    O    V    E    R")
+			print("================================================")
 			sys.exit(1)
 
 
@@ -307,15 +307,15 @@ def choose_character(wins):
 	while not (character == '1' or character == '2' or character == '3'):
 		character = input("캐릭터를 선택해 주세요. 1.정마담(하) 2.고광렬(중) 3.고니(상) ")
 	if character == '1':
-		User = {'이름' : '정마담' , 'Start_money' : 300000000, 'Skill_Percentage' : 70,'standard_pandon' : 10000000}
-		AI1 = {'이름' : 'Computer1', 'Start_money' : 200000000, 'Skill_Percentage' : 60}
-		AI2 = {'이름' : 'Computer2', 'Start_money' : 200000000, 'Skill_Percentage' : 60}
+		User = {'이름' : '\'평경장\'' , 'Start_money' : 300000000, 'Skill_Percentage' : 70,'standard_pandon' : 10000000}
+		AI1 = {'이름' : '\'Computer1\'', 'Start_money' : 200000000, 'Skill_Percentage' : 60}
+		AI2 = {'이름' : '\'Computer2\'', 'Start_money' : 200000000, 'Skill_Percentage' : 60}
 	elif character == '2':
-		User = {'이름' : '고광렬' , 'Start_money' : 300000000, 'Skill_Percentage' : 55,'standard_pandon' : 20000000}
+		User = {'이름' : '\'고광렬\'' , 'Start_money' : 300000000, 'Skill_Percentage' : 55,'standard_pandon' : 20000000}
 		AI1 = {'이름' : 'Computer1', 'Start_money' : 500000000, 'Skill_Percentage' : 70}
 		AI2 = {'이름' : 'Computer2', 'Start_money' : 500000000, 'Skill_Percentage' : 70}
 	elif character == '3':
-		User = {'이름' : '고니' , 'Start_money' : 300000000, 'Skill_Percentage' : 40'standard_pandon' : 30000000}
+		User = {'이름' : '\'고 니\'' , 'Start_money' : 300000000, 'Skill_Percentage' : 40,'standard_pandon' : 30000000}
 		AI1 = {'이름' : 'Computer1', 'Start_money' : 1000000000, 'Skill_Percentage' : 80}
 		AI2 = {'이름' : 'Computer2', 'Start_money' : 1000000000, 'Skill_Percentage' : 80}
 	global ski1
@@ -410,14 +410,14 @@ def player_menu():
 		global name1, name2
 		select='0'
 		while True:
-			print("=====================")
-			print("1.베팅   2.체크   3.다이")
-			print("4."+name1+"  5."+name2)
-			print("=====================")
-			print("Player 보유금액 :", player_money)#수정
-			print("Computer1 보유금액 :", computer1_money)#수정
-			print("Computer2 보유금액 :", computer2_money)#수정
-			print("=====================")
+			print("================================================")
+			print("1.베    팅         2.체    크            3.다    이")
+			print("4."+name1+"                            5."+name2)
+			print("================================================")
+			print(User['이름']+" 보 유 금 액  :", player_money)#수정
+			print("아 귀 보 유 금 액  :", computer1_money)#수정
+			print("정마담 보 유 금 액  :", computer2_money)#수정
+			print("================================================")
 			select=input("선택 : ")
 			if select=='1' or select=='2' or select=='3' or select=='4' or select=='5':
 				break
@@ -457,7 +457,7 @@ def WinorLose(wins):
 		Com1['rank'] = -2
 	if Com2['die'] == True:
 		Com2['rank'] = -2
-	print('당신의 족보는 :',You['what_jokbo'])
+	print(User['이름']+'의 족보는 :',You['what_jokbo'])
 	print('computer1의 족보는 :',Com1['what_jokbo'])
 	print('computer2의 족보는 :',Com2['what_jokbo'])
 	if (You['rank'] > Com1['rank']) and (You['rank'] > Com2['rank']):
@@ -509,7 +509,7 @@ def WinorLose(wins):
 			print("Computer2의 땡잡이!")
 			wins = winner(Com2,wins)
 		elif Com1['rank'] <= 8 and (You['what_jokbo'] == '멍구사' and You['rank'] != -2):
-			print("당신의 멍구사로 게임을 재시작합니다.")
+			print("의 멍구사로 게임을 재시작합니다.")
 			player_money += You['betting_money']
 			computer1_money += Com1['betting_money']
 			computer2_money += Com2['betting_money']
@@ -519,7 +519,7 @@ def WinorLose(wins):
 			computer1_money += Com1['betting_money']
 			computer2_money += Com2['betting_money']
 		elif Com1['rank'] <= 7 and (You['what_jokbo'] == '구사' and You['rank'] != -2):
-			print("당신의 구사로 게임을 재시작합니다.")
+			print(User['이름']+"의 구사로 게임을 재시작합니다.")
 			player_money += You['betting_money']
 			computer1_money += Com1['betting_money']
 			computer2_money += Com2['betting_money']
@@ -544,7 +544,7 @@ def WinorLose(wins):
 			print("Computer1의 땡잡이!")
 			wins = winner(Com1,wins)
 		elif Com2['rank'] <= 8 and (You['what_jokbo'] == '멍구사' and You['rank'] != -2):
-			print("당신의 멍구사로 게임을 재시작합니다.")
+			print(User['이름']+"의 멍구사로 게임을 재시작합니다.")
 			player_money += You['betting_money']
 			computer1_money += Com1['betting_money']
 			computer2_money += Com2['betting_money']
@@ -554,7 +554,7 @@ def WinorLose(wins):
 			computer1_money += Com1['betting_money']
 			computer2_money += Com2['betting_money']
 		elif Com2['rank'] <= 7 and (You['what_jokbo'] == '구사' and You['rank'] != -2):
-			print("당신의 구사로 게임을 재시작합니다.")
+			print(User['이름']+"의 구사로 게임을 재시작합니다.")
 			player_money += You['betting_money']
 			computer1_money += Com1['betting_money']
 			computer2_money += Com2['betting_money']
@@ -595,7 +595,7 @@ def player_turn(wins):
 		print("Computer1과 Computer2는 모두 다이를 선언했습니다")
 		wins = winner(You,wins)
 	elif You['die'] == False and player_money > 0:
-		print("당신의 차례입니다.")
+		print(User['이름']+"의 차례입니다.")
 		select = player_menu()
 		if select == '1': #베팅
 			if player_money < User['standard_pandon']:
@@ -607,7 +607,7 @@ def player_turn(wins):
 				player_money -= (betting_stack - You['betting_money'])
 				Current_money += (betting_stack - You['betting_money'])
 				You['betting_money'] = betting_stack
-				print("당신은 총",You['betting_money'],"원을 베팅했습니다.")
+				print(User['이름']+"은 총",You['betting_money'],"원을 베팅했습니다.")
 				You['end'] = False
 				wins = com1_turn(wins)
 		elif select =='2': #플레이어메뉴->체크 선택으로 플레이어가 체크인 경우(3명 모두 체크를 원하면 패 오픈)
@@ -616,14 +616,14 @@ def player_turn(wins):
 				You['betting_money'] += player_money
 				player_money = 0
 				You['end'] = True
-				print("당신은 올인하셨습니다.")
+				print(User['이름']+"은 올인했습니다.")
 			else:
 				if You['betting_money'] < betting_stack:
 					player_money -= (betting_stack - You['betting_money'])
 					Current_money += (betting_stack - You['betting_money'])
 					You['betting_money'] = betting_stack
-			print("당신은 체크를 선언했습니다.")
-			print("당신은 총",You['betting_money'],'만큼의 돈을 걸었습니다.')
+			print(User['이름']+"은 체크를 선언했습니다.")
+			print(User['이름']+"은 총",You['betting_money'],'만큼의 돈을 걸었습니다.')
 			You['end'] = True
 			You['die'] = False
 			if (You['end'] == True) and (Com1['end'] == True) and (Com2['end'] == True):
@@ -652,12 +652,12 @@ def com1_turn(wins):
 	if player_money == 0:
 		return wins
 	if You['die'] == True and Com2['die'] == True:
-		print("당신과 Computer2는 모두 다이를 선언했습니다")
+		print(User['이름']+"과 정마담은 다이를 선언했습니다")
 		wins = winner(Com1,wins)
 	elif Com1['die'] == False and computer1_money > 0:
 		check = make_percentage(Com1['check_percentage'])
 		Com1['check_percentage'] = 90
-		print("Computer1의 차례입니다.")
+		print("아귀의 차례입니다.")
 		if check == True:
 			if computer_betting(Com1) <= betting_stack: #체크
 				Com1['end'] = True
@@ -666,13 +666,13 @@ def com1_turn(wins):
 					Current_money += computer1_money
 					Com1['betting_money'] += computer1_money
 					computer1_money = 0
-					print("Computer1이 올인합니다.")
+					print("아귀가 올인합니다.")
 				else:
 					if Com1['betting_money'] < betting_stack:
 						computer1_money -= (betting_stack - Com1['betting_money'])
 						Current_money += (betting_stack - Com1['betting_money'])
 						Com1['betting_money'] = betting_stack
-				print("Computer1은 체크를 선언했습니다.")
+				print("아귀 체크를 선언했습니다.")
 				if (You['end'] == True) and (Com1['end'] == True) and (Com2['end'] == True):
 					print("패를 오픈합니다.")
 					wins = WinorLose(wins)
@@ -688,7 +688,7 @@ def com1_turn(wins):
 					Com1['betting_money'] += computer1_money
 					computer1_money = 0
 					Com1['end'] = True
-					print("Computer1이 올인합니다.")
+					print("아귀가 올인합니다.")
 					wins = com2_turn(wins)
 				else:
 					computer1_betting_money = standard_pandon
@@ -696,11 +696,11 @@ def com1_turn(wins):
 					computer1_money -= (betting_stack - Com1['betting_money'])
 					Current_money += (betting_stack - Com1['betting_money'])
 					Com1['betting_money'] = betting_stack
-					print("Computer1이",computer1_betting_money,"만큼 베팅했습니다.")
+					print("아귀가",computer1_betting_money,"만큼 베팅했습니다.")
 					Com1['end'] = False
 					wins = com2_turn(wins)
 		else:
-			print("Computer1이 다이를 선언했습니다")
+			print("아귀가 다이를 선언했습니다")
 			Com1['end'] = True
 			Com1['die'] = True
 			if (You['end'] == True) and (Com1['end'] == True) and (Com2['end'] == True):
@@ -716,12 +716,12 @@ def com2_turn(wins):
 	if player_money == 0:
 		return wins
 	if You['die'] == True and Com1['die'] == True:
-		print("당신과 Computer1는 모두 다이를 선언했습니다")
+		print(User['이름']+"과 아귀는 모두 다이를 선언했습니다")
 		wins = winner(Com2,wins)
 	elif Com2['die'] == False and computer2_money > 0:
 		check = make_percentage(Com2['check_percentage'])
 		Com2['check_percentage'] = 90
-		print("Computer2의 차례입니다.")
+		print("정마담의 차례입니다.")
 		if check == True:
 			if computer_betting(Com2) <= betting_stack: #체크
 				Com2['end'] = True
@@ -730,13 +730,13 @@ def com2_turn(wins):
 					Current_money += computer2_money
 					Com2['betting_money'] += computer2_money
 					computer2_money = 0
-					print("Computer2가 올인합니다.")
+					print("정마담이 올인합니다.")
 				else:
 					if Com2['betting_money'] < betting_stack:
 						computer2_money -= (betting_stack - Com2['betting_money'])
 						Current_money += (betting_stack - Com2['betting_money'])
 						Com2['betting_money'] = betting_stack
-				print("Computer2는 체크를 선언했습니다.")
+				print("정마담은 체크를 선언했습니다.")
 				if (You['end'] == True) and (Com1['end'] == True) and (Com2['end'] == True):
 					print("패를 오픈합니다.")
 					wins = WinorLose(wins)
@@ -752,7 +752,7 @@ def com2_turn(wins):
 					Com2['betting_money'] += computer2_money
 					computer2_money = 0
 					Com2['end'] = True
-					print("Computer2가 올인합니다.")
+					print("정마담이 올인합니다.")
 					wins = player_turn(wins)
 				else:
 					computer2_betting_money = standard_pandon
@@ -760,11 +760,11 @@ def com2_turn(wins):
 					computer2_money -= (betting_stack - Com2['betting_money'])
 					Current_money += (betting_stack - Com2['betting_money'])
 					Com2['betting_money'] = betting_stack
-					print("Computer2가",computer2_betting_money,"만큼 베팅했습니다.")
+					print("정마담이",computer2_betting_money,"만큼 베팅했습니다.")
 					Com2['end'] = False
 					wins = player_turn(wins)
 		else:
-			print("Computer2가 다이를 선언했습니다")
+			print("정마담이 다이를 선언했습니다")
 			Com2['end'] = True
 			Com2['die'] = True
 			if (You['end'] == True) and (Com1['end'] == True) and (Com2['end'] == True):
@@ -776,11 +776,12 @@ def com2_turn(wins):
 		wins = player_turn(wins)
 	return wins
 def one_round(wins):
-	global player, computer1, computer2, deck , You , Com1, Com2 , betting_stack , Current_money , standard_pandon , player_money , computer1_money , computer2_money , skill_chance
+	global player, computer1, computer2, deck , You , Com1, Com2 , betting_stack , Current_money , standard_pandon , player_money , computer1_money , computer2_money , skill_chance,User
 	standard_pandon = User['standard_pandon']
-	print("=========================")
-	print("      섯다 라운드 시작")
-	print("=========================")
+
+	print("================================================")
+	print("                 섯다 라운드 시작")
+	print("================================================")
 	print('기본베팅 금액은 ',standard_pandon,'원 입니다.')
 	deck = fresh_deck()
 	computer1 = []
@@ -788,9 +789,10 @@ def one_round(wins):
 	player = []
 	Current_money = 0
 	betting_stack = 0
-	You = {'이름' : '당신', 'betting_money' : 0 , 'rank' : 0 , 'score' : 0 , 'what_jokbo' : 0 , 'end' : False , 'die' : False}
-	Com1 = {'이름' : 'Computer1' , 'betting_money' : 0 , 'rank' : 0 , 'score' : 0 , 'what_jokbo' : 0 , 'check_percentage' : 0 , 'end' : False , 'die' : False}
-	Com2 = {'이름' : 'Computer2' , 'betting_money' : 0 , 'rank' : 0 , 'score' : 0 , 'what_jokbo' : 0 , 'check_percentage' : 0 , 'end' : False , 'die' : False}
+	You = {'이름' : User['이름'], 'betting_money' : 0 , 'rank' : 0 , 'score' : 0 , 'what_jokbo' : 0 , 'end' : False , 'die' : False}
+	Com1 = {'이름' : '아귀' , 'betting_money' : 0 , 'rank' : 0 , 'score' : 0 , 'what_jokbo' : 0 , 'check_percentage' : 0 , 'end' : False , 'die' : False}
+	
+	Com2 = {'이름' : '정마담' , 'betting_money' : 0 , 'rank' : 0 , 'score' : 0 , 'what_jokbo' : 0 , 'check_percentage' : 0 , 'end' : False , 'die' : False}
 	card, deck = hit(deck)
 	player.append(card)
 	card, deck = hit(deck)
@@ -812,7 +814,7 @@ def one_round(wins):
 	Com2['check_percentage'] = (round(Com2['rank'] * 5)) + 50
 	if Com2['rank'] == -1:
 		Com2['check_percentage'] = 0
-	print("내 패")
+	print(User['이름']+"의 패는")
 	for i in player:
 		if i == 1:
 			print('1(광)', end = ' ')
@@ -827,8 +829,8 @@ def one_round(wins):
 		elif i == 9:
 			print('3(열끗)', end = ' ')
 		else:
-			print(abs(i), end = ' ')
-	print('현재 당신의 족보는 : ' , You['what_jokbo'])
+			print(abs(i),"월 끗", end = ' ')
+	print('현재'+User['이름']+'의 족보는 : ' , You['what_jokbo'])
 	player_money -= User['standard_pandon']
 	You['betting_money'] += standard_pandon
 	computer1_money -= User['standard_pandon']
@@ -838,7 +840,7 @@ def one_round(wins):
 	Current_money = 3*standard_pandon
 	betting_stack = standard_pandon
 	if player_money <= 0:
-		print("파산했습니다")
+		print(User['이름'],"이(가) 파산했습니다ㅠㅠㅠㅠㅠㅠ")
 	elif (player_money >= computer1_money) and (player_money >= computer2_money):
 		wins = player_turn(wins)
 	elif (computer1_money > player_money) and (computer1_money >= computer2_money):
@@ -856,17 +858,18 @@ def sutda(tries,wins):
 		wins = one_round(wins)
 		tries += 1
 	if player_money <= 0:
-		print("당신은 파산했습니다.")
 		print("G A M E   O V E R")
+		print("------------------------------------------------")
 	if computer1_money <= 0 and computer2_money <= 0:
 		print("상대가 모두 파산했습니다.")
 		print("당신의 승리입니다!")
+		print("------------------------------------------------")
 	return	tries,wins
 def main():
 	while(True):
 		users = load_users()
-		print("-----------Welcome!-----------")
-		print("-----------M e n u------------")
+		print("---------------------Welcome!-------------------")
+		print("---------------------M e n u--------------------")
 		print("1. 로그인 및 게임시작")
 		print("2. 랭킹 보기")
 		print("3. 게임설명(게임방식/스킬/난이도/대출시스템)")
@@ -883,6 +886,48 @@ def main():
 			show_top5(users)
 		elif Select=='3':
 			manual()
+		else:
+			print("올바르지 않은 입력입니다.")
+def manual():
+	while(True):
+		print("---------------------게임설명---------------------")
+		print("1.게임방식")
+		print("2.스킬설명")
+		print("3.난이도설명")
+		print("4.이전 메뉴로")
+		Select = input("Select : ")
+		if Select=='1':
+			print("------------------------------------------------")
+			print('※ 게임방식')
+			print('- 각 측에 2장씩 총 6장의 패를 나누어 준다.')
+			print('- 각자 가진 2장의 패를 조합해서 패의 서열을 화면에 출력한다.')
+			print('- 원하는 금액을 베팅한다.')
+			print('- 패의 서열이 높은쪽이 그 판에서 승리한다.')
+			print('- 승리한 쪽이 판돈을 가져간다')
+			print('- 자신을 제외한 상대의 돈이 0이되면 승리한다.')
+		elif Select =='2':
+			print("------------------------------------------------")
+			print('※ 스킬')
+			print()
+			print('- 밑장빼기')
+			print('교체하고 싶은 패를 선택한뒤, 덱에 있는 무작위 카드 한장과 교체합니다.')
+			print()
+			print('- 바꿔치기')
+			print('교체하고 싶은 패와, 그 카드를 교체할 상대를 선택한뒤, 상대의 무작위 패와 선택한 카드를 교체합니다.')
+			print()
+			print('- 뻥카')
+			print('자신의 베팅금액을 2배로 늘려 상대의 다이확률을 높입니다.')
+			print()
+			print('- 훔쳐보기')
+			print('패를 보고싶은 상대를 선택한 뒤, 그 상대의 무작위 패 한장을 훔쳐봅니다.')
+			print()
+		elif Select =='3':
+			print("------------------------------------------------")
+			print('※난이도')
+			print('-캐릭터에는 각각의 상, 중, 하 난이도가 설정되어 있습니다.')
+			print('난이도가 올라갈수록 스킬 성공확률이 적어지고, 기본판돈이 늘어나며, 상대방의 초기자금이 늘어나게 됩니다.')
+		elif Select== '4':
+			break
 		else:
 			print("올바르지 않은 입력입니다.")
 main()
